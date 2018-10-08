@@ -54,7 +54,6 @@ struct Stat {
     is_dir: bool,
     size: u64,
     blocks: u64,
-    nlink: u64,
     inode: u64,
     created: u64,
     accessed: u64,
@@ -69,7 +68,6 @@ impl Stat {
             is_dir: metadata.is_dir(),
             size: metadata.len(),
             blocks: metadata.blocks() as u64,
-            nlink: metadata.nlink() as u64,
             inode: metadata.ino() as u64,
             created: metadata.mtime() as u64,
             accessed: metadata.atime() as u64,
@@ -394,7 +392,7 @@ Try '{} --help' for more information.",
                 let len = len.unwrap();
                 for (index, stat) in iter.enumerate() {
                     let size = if matches.opt_present("apparent-size") {
-                        stat.nlink * stat.size
+                        stat.size
                     } else if matches.opt_present("b") {
                         stat.size
                     } else {
